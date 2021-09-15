@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: client-service
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: ${CLIENT_ID:swift-gateway-service}
+            client-secret: ${CLIENR_SECRET:6a8295ed-7dfd-4927-8054-31aa231f8895}
+            authorization-grant-type: ${AUTHORIZATION_GRANT_TYPE:client_credentials}
+        provider:
+          keycloak:
+            token-uri: http://${HOSTNAME:localhost}:8484/auth/realms/${REALM:Demo-Realm}/protocol/openid-connect/token
+
+feign:
+  message-service:
+    url: http://${HOSTNAME:localhost}:8080/message-service
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+server:
+  port: 8082
+  servlet:
+    context-path: /

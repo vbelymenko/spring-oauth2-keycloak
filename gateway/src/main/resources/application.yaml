@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: gateway-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://${HOSTNAME:localhost}:8484/auth/realms/${REALM:Demo-Realm}
+  cloud:
+    gateway:
+      routes:
+        - id: message-service
+          uri: http://${HOSTNAME:localhost}:8081
+          predicates:
+            - Path=/message-service/**
+          filters:
+            - StripPrefix=1
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+server:
+  port: 8080
+  servlet:
+    context-path: /
